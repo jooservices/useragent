@@ -19,7 +19,9 @@
         <testsuite name="integration">
             <directory>tests/Integration</directory>
         </testsuite>
-
+        <testsuite name="support">
+            <directory>tests/Support</directory>
+        </testsuite>
     </testsuites>
     
     <source>

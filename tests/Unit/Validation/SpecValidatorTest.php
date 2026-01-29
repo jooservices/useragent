@@ -26,16 +26,16 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_validates_empty_spec(): void
     {
+        $this->expectNotToPerformAssertions();
         $spec = new GenerationSpec();
 
         $this->validator->validate($spec);
-
-        // No exception = success
     }
 
     /** @test */
     public function test_it_validates_valid_spec_with_all_properties(): void
     {
+        $this->expectNotToPerformAssertions();
         $spec = GenerationSpec::create()
             ->browser(BrowserFamily::Chrome)
             ->device(DeviceType::Desktop)
@@ -54,6 +54,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_validates_version_exact_without_range(): void
     {
+        $this->expectNotToPerformAssertions();
         $spec = GenerationSpec::create()
             ->versionExact(115)
             ->build();
@@ -64,6 +65,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_validates_all_valid_channels(): void
     {
+        $this->expectNotToPerformAssertions();
         $channels = ['stable', 'beta', 'dev', 'canary'];
 
         foreach ($channels as $channel) {
@@ -78,6 +80,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_validates_all_valid_architectures(): void
     {
+        $this->expectNotToPerformAssertions();
         $architectures = ['x86_64', 'x64', 'ARM', 'ARM64', 'WOW64', 'i686'];
 
         foreach ($architectures as $arch) {
@@ -92,6 +95,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_validates_various_locale_formats(): void
     {
+        $this->expectNotToPerformAssertions();
         $locales = ['en-US', 'fr-FR', 'de-DE', 'ja-JP', 'zh-CN', 'pt-BR', 'en', 'fr'];
 
         foreach ($locales as $locale) {
@@ -284,6 +288,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_accepts_version_999(): void
     {
+        $this->expectNotToPerformAssertions();
         $spec = GenerationSpec::create()
             ->versionMin(1)
             ->versionMax(999)
@@ -572,6 +577,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_accepts_zero_seed(): void
     {
+        $this->expectNotToPerformAssertions();
         $spec = GenerationSpec::create()
             ->randomSpec(new RandomSpec(seed: 0))
             ->build();
@@ -582,6 +588,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_accepts_zero_retry_budget(): void
     {
+        $this->expectNotToPerformAssertions();
         $spec = GenerationSpec::create()
             ->randomSpec(new RandomSpec(retryBudget: 0))
             ->build();
@@ -594,6 +601,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_validates_minimum_version_value(): void
     {
+        $this->expectNotToPerformAssertions();
         $spec = GenerationSpec::create()
             ->versionMin(1)
             ->versionMax(1)
@@ -605,6 +613,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_validates_same_min_and_max_version(): void
     {
+        $this->expectNotToPerformAssertions();
         $spec = GenerationSpec::create()
             ->versionMin(115)
             ->versionMax(115)
@@ -616,6 +625,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_validates_large_version_range(): void
     {
+        $this->expectNotToPerformAssertions();
         $spec = GenerationSpec::create()
             ->versionMin(1)
             ->versionMax(999)
@@ -691,6 +701,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_handles_unicode_in_tags(): void
     {
+        $this->expectNotToPerformAssertions();
         $spec = GenerationSpec::create()
             ->tags(['popular', '日本語', 'émoji🎉'])
             ->build();
@@ -701,6 +712,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_handles_very_long_tag_names(): void
     {
+        $this->expectNotToPerformAssertions();
         $longTag = str_repeat('a', 1000);
 
         $spec = GenerationSpec::create()
@@ -713,6 +725,7 @@ final class SpecValidatorTest extends TestCase
     /** @test */
     public function test_it_handles_many_tags(): void
     {
+        $this->expectNotToPerformAssertions();
         $manyTags = array_map(fn ($i) => "tag{$i}", range(1, 1000));
 
         $spec = GenerationSpec::create()
