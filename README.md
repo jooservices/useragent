@@ -12,10 +12,33 @@ A powerful, comprehensive PHP library for generating realistic, specification-co
 - **Deterministic**: Seed-based generation for reproducible testing.
 - **High Quality**: 100% Type-safe, PHPStan Level 9, 99% Test Coverage.
 
+## Documentation
+
+- **[Usage Guide](docs/usage.md)**: Full documentation on generation, strategies, and shortcuts.
+- **[Examples](docs/examples/)**: Runnable scripts demonstrating all features.
+- **[Contributing](CONTRIBUTING.md)**: Guide for contributors.
+- **[Security](SECURITY.md)**: Vulnerability reporting policy.
+
 ## Installation
 
 ```bash
 composer require jooservices/useragent
+```
+
+## CLI Usage
+
+The library includes a zero-dependency CLI tool for generating strings from the command line.
+
+```bash
+# Generate 1 random string
+./vendor/bin/useragent
+
+# Generate 5 strings
+./vendor/bin/useragent --count=5
+
+# Specific constraints
+./vendor/bin/useragent --browser=firefox --os=windows
+./vendor/bin/useragent --device=mobile --browser=safari
 ```
 
 ## Quick Start

@@ -3,6 +3,9 @@
     "description": "Advanced User-Agent string generator with flexible randomization strategies",
     "type": "library",
     "license": "MIT",
+    "bin": [
+        "bin/useragent"
+    ],
     "version": "1.0.0",
     "authors": [
         {

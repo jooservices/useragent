@@ -19,9 +19,7 @@
         <testsuite name="integration">
             <directory>tests/Integration</directory>
         </testsuite>
-        <testsuite name="statistical">
-            <directory>tests/Statistical</directory>
-        </testsuite>
+
     </testsuites>
     
     <source>

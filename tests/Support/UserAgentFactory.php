@@ -29,9 +29,7 @@ final class UserAgentFactory
      */
     public function make(array $overrides = []): UserAgent
     {
-        $uaString = isset($overrides['uaString']) && is_string($overrides['uaString'])
-            ? $overrides['uaString']
-            : $this->faker->userAgent();
+        $uaString = $this->resolveValue($overrides, 'uaString', 'string', fn () => $this->faker->userAgent());
 
         $meta = isset($overrides['meta']) && $overrides['meta'] instanceof Meta
             ? $overrides['meta']
@@ -77,37 +75,22 @@ final class UserAgentFactory
      */
     private function makeRandomMeta(array $overrides = []): Meta
     {
-        $device = isset($overrides['device']) && $overrides['device'] instanceof DeviceType
-            ? $overrides['device']
-            : $this->faker->randomElement(DeviceType::cases());
-
-        $os = isset($overrides['os']) && $overrides['os'] instanceof OperatingSystem
-            ? $overrides['os']
-            : $this->faker->randomElement(OperatingSystem::cases());
-
-        $browser = isset($overrides['browser']) && $overrides['browser'] instanceof BrowserFamily
-            ? $overrides['browser']
-            : $this->faker->randomElement(BrowserFamily::cases());
-
-        $engine = isset($overrides['engine']) && $overrides['engine'] instanceof Engine
-            ? $overrides['engine']
-            : $this->faker->randomElement(Engine::cases());
-
-        $version = isset($overrides['version']) && is_int($overrides['version'])
-            ? $overrides['version']
-            : $this->faker->numberBetween(80, 130);
-
-        $marketShare = isset($overrides['marketShare']) && $overrides['marketShare'] instanceof MarketShare
-            ? $overrides['marketShare']
-            : new MarketShare($this->faker->randomFloat(2, 0, 100));
-
-        $riskLevel = isset($overrides['riskLevel']) && $overrides['riskLevel'] instanceof RiskLevel
-            ? $overrides['riskLevel']
-            : $this->faker->randomElement(RiskLevel::cases());
-
-        $tags = isset($overrides['tags']) && is_array($overrides['tags'])
-            ? array_values(array_filter($overrides['tags'], 'is_string'))
-            : $this->faker->words($this->faker->numberBetween(0, 5));
+        /** @var DeviceType $device */
+        $device = $this->resolveValue($overrides, 'device', DeviceType::class, fn () => $this->faker->randomElement(DeviceType::cases()));
+        /** @var OperatingSystem $os */
+        $os = $this->resolveValue($overrides, 'os', OperatingSystem::class, fn () => $this->faker->randomElement(OperatingSystem::cases()));
+        /** @var BrowserFamily $browser */
+        $browser = $this->resolveValue($overrides, 'browser', BrowserFamily::class, fn () => $this->faker->randomElement(BrowserFamily::cases()));
+        /** @var Engine $engine */
+        $engine = $this->resolveValue($overrides, 'engine', Engine::class, fn () => $this->faker->randomElement(Engine::cases()));
+        /** @var int $version */
+        $version = $this->resolveValue($overrides, 'version', 'integer', fn () => $this->faker->numberBetween(80, 130));
+        /** @var MarketShare $marketShare */
+        $marketShare = $this->resolveValue($overrides, 'marketShare', MarketShare::class, fn () => new MarketShare($this->faker->randomFloat(2, 0, 100)));
+        /** @var RiskLevel $riskLevel */
+        $riskLevel = $this->resolveValue($overrides, 'riskLevel', RiskLevel::class, fn () => $this->faker->randomElement(RiskLevel::cases()));
+        /** @var array<string> $tags */
+        $tags = $this->resolveValue($overrides, 'tags', 'array', fn () => $this->faker->words($this->faker->numberBetween(0, 5)));
 
         /**
          * @phpstan-ignore argument.type
@@ -122,5 +105,32 @@ final class UserAgentFactory
             riskLevel: $riskLevel,
             tags: $tags,
         );
+    }
+
+    /**
+     * @template T of mixed
+     *
+     * @param array<string, mixed> $overrides
+     * @param string|class-string  $type
+     * @param callable(): T        $default
+     *
+     */
+    private function resolveValue(array $overrides, string $key, string $type, callable $default): mixed
+    {
+        if (! isset($overrides[$key])) {
+            return $default();
+        }
+
+        $value = $overrides[$key];
+
+        if (class_exists($type) || interface_exists($type)) {
+            if ($value instanceof $type) {
+                return $value;
+            }
+        } elseif (gettype($value) === $type) {
+            return $value;
+        }
+
+        return $default();
     }
 }

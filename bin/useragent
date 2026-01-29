@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+use JOOservices\UserAgent\Console\ConsoleApp;
+
+$autoload = __DIR__ . '/../vendor/autoload.php';
+
+if (!file_exists($autoload)) {
+    fwrite(STDERR, 'Error: Vendor autoload not found. Run composer install.' . PHP_EOL);
+    exit(1);
+}
+
+require $autoload;
+
+$app = new ConsoleApp($argv);
+exit($app->run());

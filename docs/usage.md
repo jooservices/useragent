@@ -111,3 +111,13 @@ assert($ua1 === $ua2); // Always true
 To avoid repeating the same User-Agent in a short period, the service uses an LRU (Least Recently Used) history mechanism automatically.
 
 By default, it remembers the last 100 generated UAs and attempts to pick a fresh one. You can configure this via `RandomSpec` if needed.
+
+## CLI Tool
+
+For quick tests or generating strings without writing PHP code, you can use the included CLI tool:
+
+```bash
+./vendor/bin/useragent --count=5 --browser=firefox
+```
+
+See the [README](../README.md#cli-usage) for full CLI documentation.
