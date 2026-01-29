@@ -51,9 +51,10 @@
             "@lint:phpstan",
             "@lint:phpmd"
         ],
-        "test:unit": "phpunit --testsuite=unit --coverage-text",
+        "test:unit": "phpunit --testsuite=unit",
         "test:integration": "phpunit --testsuite=integration",
-        "test:all": "phpunit --coverage-text --coverage-html=coverage",
+        "test:all": "phpunit",
+        "test:coverage": "phpunit --coverage-text --coverage-html=coverage",
         "test:mutation": "infection --threads=4 --min-msi=100 --min-covered-msi=100",
         "test": [
             "@test:all"
