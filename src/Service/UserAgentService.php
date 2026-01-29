@@ -220,7 +220,7 @@ final class UserAgentService
         }
 
         // Add OS version (simplified - could be more sophisticated)
-        $context['osVersion'] = $this->getOsVersion($os);
+        $context['os_version'] = $this->getOsVersion($os);
 
         return $context;
     }
@@ -231,12 +231,12 @@ final class UserAgentService
     private function getOsVersion(OperatingSystem $os): string
     {
         return match ($os) {
-            OperatingSystem::Windows => '10.0',
-            OperatingSystem::MacOS => '14.0',
-            OperatingSystem::Linux => '5.15',
-            OperatingSystem::Android => '14',
-            OperatingSystem::iOS => '17.0',
-            OperatingSystem::ChromeOS => '120',
+            OperatingSystem::Windows => mt_rand(0, 1) ? '10.0' : '11.0',
+            OperatingSystem::MacOS => '14.' . mt_rand(0, 5),
+            OperatingSystem::Linux => '5.' . mt_rand(10, 19),
+            OperatingSystem::Android => (string) mt_rand(10, 14),
+            OperatingSystem::iOS => '17.' . mt_rand(0, 4),
+            OperatingSystem::ChromeOS => (string) mt_rand(120, 145),
         };
     }
 }
