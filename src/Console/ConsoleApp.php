@@ -90,13 +90,13 @@ final class ConsoleApp
     private function mapOsName(string $input): string
     {
         $map = [
-            'mac' => 'MacOS',
-            'win' => 'Windows',
-            'linux' => 'Linux',
-            'android' => 'Android',
-            'ios' => 'iOS',
+            'mac' => 'macos',
+            'win' => 'windows',
+            'linux' => 'linux',
+            'android' => 'android',
+            'ios' => 'ios',
         ];
 
-        return $map[strtolower($input)] ?? ucfirst($input);
+        return $map[strtolower($input)] ?? strtolower($input);
     }
 }
