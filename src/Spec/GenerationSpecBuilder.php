@@ -172,6 +172,8 @@ final class GenerationSpecBuilder
             locale: $this->locale,
             arch: $this->arch,
             tags: $this->tags,
+            riskLevel: $this->riskLevel,
+            weights: $this->weights,
             randomSpec: $this->randomSpec,
             strategy: $this->strategy,
         );
