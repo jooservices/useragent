@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<ruleset name="JOOservices UserAgent">
+    <description>PHP_CodeSniffer rules (aligned with Pint)</description>
+    
+    <!-- Files to check -->
+    <file>src</file>
+    <file>tests</file>
+    
+    <!-- Exclude vendors -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/coverage/*</exclude-pattern>
+    
+    <!-- PSR-12 base -->
+    <rule ref="PSR12"/>
+    
+    <!-- Strict types required -->
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
+        <properties>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
+        </properties>
+    </rule>
+    
+    <!-- Type hints -->
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint"/>
+    
+    <!-- Unused code -->
+    <rule ref="SlevomatCodingStandard.Variables.UnusedVariable"/>
+    <rule ref="SlevomatCodingStandard.Functions.UnusedParameter"/>
+    
+    <!-- Complexity (aligned with PHPMD) -->
+    <rule ref="Generic.Metrics.CyclomaticComplexity">
+        <properties>
+            <property name="complexity" value="5"/>
+        </properties>
+    </rule>
+    <rule ref="Generic.Metrics.NestingLevel">
+        <properties>
+            <property name="nestingLevel" value="3"/>
+        </properties>
+    </rule>
+    
+    <!-- Formatting - defer to Pint but validate -->
+    <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="120"/>
+        </properties>
+    </rule>
+</ruleset>

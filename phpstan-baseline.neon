@@ -1,0 +1,43 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \$spec of method JOOservices\\UserAgent\\Contracts\\RandomStrategyInterface\:\:select\(\) has invalid type JOOservices\\UserAgent\\Spec\\RandomSpec\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Contracts/RandomStrategyInterface.php
+
+		-
+			message: '#^Parameter \$browser of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects JOOservices\\UserAgent\\Domain\\Enums\\BrowserFamily\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Support/UserAgentFactory.php
+
+		-
+			message: '#^Parameter \$device of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects JOOservices\\UserAgent\\Domain\\Enums\\DeviceType\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Support/UserAgentFactory.php
+
+		-
+			message: '#^Parameter \$engine of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects JOOservices\\UserAgent\\Domain\\Enums\\Engine\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Support/UserAgentFactory.php
+
+		-
+			message: '#^Parameter \$os of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects JOOservices\\UserAgent\\Domain\\Enums\\OperatingSystem\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Support/UserAgentFactory.php
+
+		-
+			message: '#^Parameter \$riskLevel of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects JOOservices\\UserAgent\\Domain\\Enums\\RiskLevel\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Support/UserAgentFactory.php
+
+		-
+			message: '#^Parameter \$tags of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects array\<string\>, array\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Support/UserAgentFactory.php

@@ -1,0 +1,13 @@
+parameters:
+    level: 9
+    paths:
+        - src
+        - tests
+    tmpDir: build/phpstan
+    reportUnmatchedIgnoredErrors: false
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        - '#Parameter \$spec of method JOOservices\\UserAgent\\Contracts\\RandomStrategyInterface::select\(\) has invalid type JOOservices\\UserAgent\\Spec\\RandomSpec#'
+
+includes:
+    - phpstan-baseline.neon

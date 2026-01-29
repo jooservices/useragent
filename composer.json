@@ -1,0 +1,77 @@
+{
+    "name": "jooservices/useragent",
+    "description": "Advanced User-Agent string generator with flexible randomization strategies",
+    "type": "library",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "JOOservices",
+            "email": "info@jooservices.com"
+        }
+    ],
+    "require": {
+        "php": "^8.5"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.14",
+        "squizlabs/php_codesniffer": "^3.8",
+        "slevomat/coding-standard": "^8.15",
+        "phpunit/phpunit": "^12.0",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpmd/phpmd": "^2.15",
+        "infection/infection": "^0.29",
+        "fakerphp/faker": "^1.23",
+        "mikey179/vfsstream": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "JOOservices\\UserAgent\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JOOservices\\UserAgent\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "lint:pint": "pint",
+        "lint:pint:test": "pint --test",
+        "lint:phpcs": "phpcs --standard=phpcs.xml --colors -p src tests",
+        "lint:phpcbf": "phpcbf --standard=phpcs.xml src tests",
+        "lint:phpstan": "phpstan analyse --memory-limit=2G",
+        "lint:phpmd": "phpmd src text phpmd.xml",
+        "lint": [
+            "@lint:pint:test",
+            "@lint:phpcs",
+            "@lint:phpstan",
+            "@lint:phpmd"
+        ],
+        "test:unit": "phpunit --testsuite=unit --coverage-text",
+        "test:integration": "phpunit --testsuite=integration",
+        "test:all": "phpunit --coverage-text --coverage-html=coverage",
+        "test:mutation": "infection --threads=4 --min-msi=100 --min-covered-msi=100",
+        "test": [
+            "@test:all"
+        ],
+        "check": [
+            "@lint",
+            "@test"
+        ],
+        "fix": [
+            "@lint:pint",
+            "@lint:phpcbf"
+        ]
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "infection/extension-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
