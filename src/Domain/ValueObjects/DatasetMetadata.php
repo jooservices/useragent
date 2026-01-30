@@ -17,8 +17,7 @@ final readonly class DatasetMetadata
         public DateTimeImmutable $updatedAt,
         public string $license,
         public ?string $source = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array.
@@ -34,7 +33,7 @@ final readonly class DatasetMetadata
 
         $updatedAt = isset($data['updated_at']) && is_string($data['updated_at'])
             ? new DateTimeImmutable($data['updated_at'])
-            : new DateTimeImmutable();
+            : new DateTimeImmutable;
 
         return new self($name, $version, $updatedAt, $license, $source);
     }

@@ -17,7 +17,7 @@ final class ProfileShortcutsTest extends TestCase
 
     protected function setUp(): void
     {
-        $service = new UserAgentService();
+        $service = new UserAgentService;
         $this->profiles = new Profiles($service);
     }
 

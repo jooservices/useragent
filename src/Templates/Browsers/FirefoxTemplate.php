@@ -31,11 +31,17 @@ final class FirefoxTemplate extends BrowserTemplate
         return Engine::Gecko;
     }
 
+    /**
+     * @return array<DeviceType>
+     */
     public function getSupportedDevices(): array
     {
         return [DeviceType::Desktop, DeviceType::Mobile, DeviceType::Tablet];
     }
 
+    /**
+     * @return array<OperatingSystem>
+     */
     public function getSupportedOs(DeviceType $device): array
     {
         return match ($device) {

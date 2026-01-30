@@ -17,8 +17,7 @@ final class EngineFilter
      */
     public function __construct(
         private readonly array $allowedEngines
-    ) {
-    }
+    ) {}
 
     /**
      * Check if template uses allowed engine.

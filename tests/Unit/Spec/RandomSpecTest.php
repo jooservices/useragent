@@ -14,7 +14,7 @@ final class RandomSpecTest extends TestCase
     /** @test */
     public function test_it_creates_spec_with_defaults(): void
     {
-        $spec = new RandomSpec();
+        $spec = new RandomSpec;
 
         $this->assertNull($spec->seed);
         $this->assertSame(100, $spec->historyWindow);
@@ -181,7 +181,7 @@ final class RandomSpecTest extends TestCase
     /** @test */
     public function is_deterministic_returns_false_when_seed_is_null(): void
     {
-        $spec = new RandomSpec();
+        $spec = new RandomSpec;
         $this->assertFalse($spec->isDeterministic());
     }
 

@@ -58,7 +58,7 @@ final class UserAgentRenderer
         $result = $template;
 
         foreach ($context as $key => $value) {
-            $placeholder = '{' . $key . '}';
+            $placeholder = '{'.$key.'}';
             $result = str_replace($placeholder, (string) $value, $result);
         }
 

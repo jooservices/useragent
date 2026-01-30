@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.1.0] - 2026-01-30
+
+### Improved
+- **Code Quality**: Enforced strict linting standards with `Laravel Pint`, `PHP_CodeSniffer`, `PHPStan` (Level 9), and `PHPMD`.
+- **Developer Experience**: Consolidated linting commands in `composer.json` (`lint`, `fix`, `check`).
+- **Documentation**: Updated PHPDoc annotations for better IDE support and static analysis.
+
+### Fixed
+- Resolved unused parameter warnings in `ModelPicker`, `UserAgentService`, and Browser Templates.
+- Fixed inconsistent return type annotations in `BrowserTemplate` implementations.
+- Addressed PSR-12 and Pint style conflicts to ensure consistent code formatting.
+
 ## [1.0.0] - 2026-01-29
 
 ### Added

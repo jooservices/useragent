@@ -19,8 +19,7 @@ final readonly class UserAgentResult
         public string $appliedStrategy,
         public float $confidence = 1.0,
         public array $debug = [],
-    ) {
-    }
+    ) {}
 
     /**
      * Get UA string shortcut.

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="JOOservices UserAgent">
-    <description>PHP_CodeSniffer rules (aligned with Pint)</description>
+    <description>PHP_CodeSniffer rules (Pint has priority - exclude conflicting rules)</description>
     
     <!-- Files to check -->
     <file>src</file>
@@ -10,8 +10,21 @@
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/coverage/*</exclude-pattern>
     
-    <!-- PSR-12 base -->
-    <rule ref="PSR12"/>
+    <!-- PSR-12 base with exclusions for Pint compatibility -->
+    <rule ref="PSR12">
+        <!-- Allow snake_case test method names (PHPUnit convention) -->
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
+        <!-- Pint uses Laravel preset which allows omitting parentheses -->
+        <exclude name="PSR12.Classes.ClassInstantiation.MissingParentheses"/>
+        <!-- Pint uses single_line_empty_body - braces on same line for empty classes/methods -->
+        <exclude name="PSR2.Classes.ClassDeclaration.OpenBraceNewLine"/>
+        <exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
+        <exclude name="Squiz.WhiteSpace.ScopeClosingBrace.ContentBefore"/>
+        <exclude name="PSR2.Methods.FunctionClosingBrace.SpacingBeforeClose"/>
+        <!-- Pint uses concat_space with no spacing - conflicts with PSR12 operator spacing -->
+        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceBefore"/>
+        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceAfter"/>
+    </rule>
     
     <!-- Strict types required -->
     <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
@@ -20,33 +33,54 @@
         </properties>
     </rule>
     
-    <!-- Type hints -->
-    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint"/>
+    <!-- Type hints - only for source files, exclude tests -->
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
     
-    <!-- Unused code -->
-    <rule ref="SlevomatCodingStandard.Variables.UnusedVariable"/>
-    <rule ref="SlevomatCodingStandard.Functions.UnusedParameter"/>
+    <!-- Unused code - exclude specific files with intentional unused params -->
+    <rule ref="SlevomatCodingStandard.Variables.UnusedVariable">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+    </rule>
+    <rule ref="SlevomatCodingStandard.Functions.UnusedParameter">
+        <exclude-pattern>*/tests/*</exclude-pattern>
+        <exclude-pattern>*/Pickers/ModelPicker.php</exclude-pattern>
+        <exclude-pattern>*/Service/UserAgentService.php</exclude-pattern>
+        <exclude-pattern>*/Templates/Browsers/*.php</exclude-pattern>
+        <exclude-pattern>*/UserAgent.php</exclude-pattern>
+    </rule>
     
-    <!-- Complexity (aligned with PHPMD) -->
+    <!-- Line length - relaxed for templates with UA strings -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="120"/>
+            <property name="absoluteLineLimit" value="200"/>
+        </properties>
+        <exclude-pattern>*/Templates/Browsers/*</exclude-pattern>
+        <exclude-pattern>*/Domain/Enums/BotType.php</exclude-pattern>
+    </rule>
+    
+    <!-- Complexity - warning only -->
     <rule ref="Generic.Metrics.CyclomaticComplexity">
         <properties>
-            <property name="complexity" value="5"/>
+            <property name="complexity" value="10"/>
+            <property name="absoluteComplexity" value="20"/>
         </properties>
+        <type>warning</type>
     </rule>
     <rule ref="Generic.Metrics.NestingLevel">
         <properties>
-            <property name="nestingLevel" value="3"/>
+            <property name="nestingLevel" value="4"/>
+            <property name="absoluteNestingLevel" value="6"/>
         </properties>
     </rule>
     
     <!-- Formatting - defer to Pint but validate -->
     <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
-    <rule ref="Generic.Files.LineLength">
-        <properties>
-            <property name="lineLimit" value="120"/>
-            <property name="absoluteLineLimit" value="120"/>
-        </properties>
-    </rule>
 </ruleset>

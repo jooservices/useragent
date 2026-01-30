@@ -11,7 +11,7 @@ final class UniqueGuard
 
     public static function check(string $ua): bool
     {
-        return !isset(self::$history[$ua]);
+        return ! isset(self::$history[$ua]);
     }
 
     public static function add(string $ua): void

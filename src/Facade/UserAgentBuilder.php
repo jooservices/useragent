@@ -4,18 +4,29 @@ declare(strict_types=1);
 
 namespace JOOservices\UserAgent\Facade;
 
+use Exception;
+use JOOservices\UserAgent\Domain\Enums\BotType;
 use JOOservices\UserAgent\Domain\Enums\BrowserFamily;
 use JOOservices\UserAgent\Domain\Enums\DeviceType;
 use JOOservices\UserAgent\Domain\Enums\OperatingSystem;
 use JOOservices\UserAgent\Service\UserAgentService;
 use JOOservices\UserAgent\Spec\GenerationSpec;
+use JOOservices\UserAgent\Templates\Bots\BotTemplate;
 use RuntimeException;
 
 final class UserAgentBuilder
 {
     private bool $unique = false;
+
     private bool $excluding = false;
+
     private int $retryLimit = 50;
+
+    private ?BotType $botType = null;
+
+    private bool $botMobile = false;
+
+    private ?int $maxAgeMonths = null;
 
     private const SUPPORTED_BROWSERS = [
         BrowserFamily::Chrome,
@@ -65,12 +76,14 @@ final class UserAgentBuilder
     public function unique(): self
     {
         $this->unique = true;
+
         return $this;
     }
 
     public function exclude(): self
     {
         $this->excluding = true;
+
         return $this;
     }
 
@@ -103,10 +116,11 @@ final class UserAgentBuilder
         } else {
             // Include mode
             if (count($this->allowedBrowsers) === count(self::SUPPORTED_BROWSERS)) {
-                 $this->allowedBrowsers = [];
+                $this->allowedBrowsers = [];
             }
             $this->allowedBrowsers[$browser->value] = $browser;
         }
+
         return $this;
     }
 
@@ -137,6 +151,7 @@ final class UserAgentBuilder
             }
             $this->allowedDevices[$device->value] = $device;
         }
+
         return $this;
     }
 
@@ -172,18 +187,98 @@ final class UserAgentBuilder
         if ($this->excluding) {
             unset($this->allowedOses[$os->value]);
         } else {
-             if (count($this->allowedOses) === count(self::SUPPORTED_OSES)) {
-                 $this->allowedOses = [];
+            if (count($this->allowedOses) === count(self::SUPPORTED_OSES)) {
+                $this->allowedOses = [];
             }
             $this->allowedOses[$os->value] = $os;
         }
+
         return $this;
+    }
+
+    // --- Bots ---
+
+    /**
+     * Generate a Googlebot User-Agent.
+     */
+    public function googlebot(): string
+    {
+        return $this->bot(BotType::Googlebot);
+    }
+
+    /**
+     * Generate a Bingbot User-Agent.
+     */
+    public function bingbot(): string
+    {
+        return $this->bot(BotType::Bingbot);
+    }
+
+    /**
+     * Generate a bot User-Agent for the specified type.
+     */
+    public function bot(BotType $type): string
+    {
+        $template = new BotTemplate;
+
+        return $template->generate($type, $this->botMobile);
+    }
+
+    /**
+     * Set mobile mode for bot generation.
+     */
+    public function botAsMobile(): self
+    {
+        $this->botMobile = true;
+
+        return $this;
+    }
+
+    // --- Age Control ---
+
+    /**
+     * Only generate UAs from recent browser versions.
+     */
+    public function recent(int $months = 6): self
+    {
+        $this->maxAgeMonths = $months;
+
+        return $this;
+    }
+
+    // --- Batch Generation ---
+
+    /**
+     * Generate multiple User-Agent strings with unique guarantee.
+     *
+     * @return array<string>
+     */
+    public function generateMany(int $count): array
+    {
+        $results = [];
+        $wasUnique = $this->unique;
+        $this->unique = true; // Force unique mode for batch
+
+        try {
+            for ($i = 0; $i < $count; $i++) {
+                $results[] = $this->generate();
+            }
+        } finally {
+            $this->unique = $wasUnique;
+        }
+
+        return $results;
     }
 
     // --- Generation ---
 
     public function generate(): string
     {
+        // Handle bot generation
+        if ($this->botType !== null) {
+            return $this->bot($this->botType);
+        }
+
         // 1. Resolve final constraints
         $spec = $this->resolveSpec();
 
@@ -192,23 +287,25 @@ final class UserAgentBuilder
         do {
             try {
                 $ua = $this->service->generate($spec);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // For debugging only
-                echo "Failed Spec: Browser=" . ($spec->browser?->value ?? 'null') 
-                     . ", Device=" . ($spec->device?->value ?? 'null')
-                     . ", OS=" . ($spec->os?->value ?? 'null') . "\n";
+                echo 'Failed Spec: Browser='.($spec->browser?->value ?? 'null')
+                     .', Device='.($spec->device?->value ?? 'null')
+                     .', OS='.($spec->os?->value ?? 'null')."\n";
+
                 throw $e;
             }
-            
-            if (!$this->unique) {
+
+            if (! $this->unique) {
                 return $ua;
             }
 
             if (UniqueGuard::check($ua)) {
                 UniqueGuard::add($ua);
+
                 return $ua;
             }
-            
+
             $attempts++;
         } while ($attempts < $this->retryLimit);
 
@@ -221,7 +318,7 @@ final class UserAgentBuilder
 
         // 1. Pick Browser first (Foundation)
         if (empty($this->allowedBrowsers)) {
-            throw new RuntimeException("No browsers left in candidate pool (all excluded?)");
+            throw new RuntimeException('No browsers left in candidate pool (all excluded?)');
         }
 
         // --- NEW: Backward Filter Browsers by Allowed OSs ---
@@ -230,7 +327,7 @@ final class UserAgentBuilder
         $validBrowsers = $this->filterBrowsersByAllowedOses($this->allowedBrowsers, $this->allowedOses);
 
         if (empty($validBrowsers)) {
-             throw new RuntimeException("No valid Browser found compatible with allowed OSs.");
+            throw new RuntimeException('No valid Browser found compatible with allowed OSs.');
         }
 
         /** @var BrowserFamily $browser */
@@ -239,9 +336,9 @@ final class UserAgentBuilder
 
         // 2. Filter Devices supported by this Browser
         $validDevices = $this->filterDevicesByBrowser($browser);
-        
+
         // Refinement: Filter Devices that can support at least ONE of the allowed OSs
-        // If user said ->windows(), allowedOSs=[Windows]. 
+        // If user said ->windows(), allowedOSs=[Windows].
         // We should NOT pick Tablet, because Tablet supports [Android, iOS], which has NO overlap with [Windows].
         $validDevices = $this->filterDevicesBySupportedOses($validDevices, $this->allowedOses);
 
@@ -249,7 +346,7 @@ final class UserAgentBuilder
         $finalDevices = array_intersect_key($validDevices, $this->allowedDevices);
 
         if (empty($finalDevices)) {
-             throw new RuntimeException("No valid Device found for Browser: {$browser->value} compatible with allowed OSs.");
+            throw new RuntimeException("No valid Device found for Browser: {$browser->value} compatible with allowed OSs.");
         }
         /** @var DeviceType $device */
         $device = $this->pickRandom($finalDevices);
@@ -257,7 +354,7 @@ final class UserAgentBuilder
 
         // 3. Filter OS candidates based on Device AND Browser
         $validOses = $this->filterOsesByDevice($device, $browser);
-        
+
         // Intersect valid OSs with allowed OSs
         $finalOses = array_intersect_key($validOses, $this->allowedOses);
 
@@ -277,7 +374,7 @@ final class UserAgentBuilder
      */
     private function filterDevicesByBrowser(BrowserFamily $browser): array
     {
-        // Define browser capabilities here. 
+        // Define browser capabilities here.
         // This should ideally map to the Templates, but hardcoding for the Builder is acceptable for now.
         $map = match ($browser) {
             BrowserFamily::Chrome, BrowserFamily::Firefox, BrowserFamily::Edge => [
@@ -287,7 +384,7 @@ final class UserAgentBuilder
             ],
             BrowserFamily::Safari => [
                 DeviceType::Desktop,
-                DeviceType::Mobile, 
+                DeviceType::Mobile,
                 DeviceType::Tablet,
             ],
             default => [
@@ -297,13 +394,14 @@ final class UserAgentBuilder
 
         // Note: Safari on Windows/Linux is technically possible in old versions but this lib likely targets modern.
         // The Library's SafariTemplate supports: Desktop (MacOS), Mobile (iOS).
-        // So Safari + Desktop is OK (but OS must be Mac). 
+        // So Safari + Desktop is OK (but OS must be Mac).
         // Safari + Mobile is OK (but OS must be iOS).
-        
+
         $result = [];
         foreach ($map as $device) {
             $result[$device->value] = $device;
         }
+
         return $result;
     }
 
@@ -336,33 +434,44 @@ final class UserAgentBuilder
 
         // Further refinement for Mobile Safari (must be iOS)
         if (($device === DeviceType::Mobile || $device === DeviceType::Tablet) && $browser === BrowserFamily::Safari) {
-             $map = [OperatingSystem::iOS];
+            $map = [OperatingSystem::iOS];
         }
 
         $result = [];
         foreach ($map as $os) {
             $result[$os->value] = $os;
         }
+
         return $result;
     }
 
+    /**
+     * @param array<string, DeviceType>      $devices
+     * @param array<string, OperatingSystem> $allowedOses
+     *
+     * @return array<string, DeviceType>
+     */
     private function filterDevicesBySupportedOses(array $devices, array $allowedOses): array
     {
         $result = [];
         foreach ($devices as $key => $device) {
-            // Get all OSs supported by this device (Generic map, ignoring browser specific strictness for now as a heuristic)
+            // Get all OSs supported by this device
             $supportedOses = $this->getGenericSupportedOses($device);
-            
+
             // Check if there is ANY overlap with allowedOses
             $intersect = array_intersect_key($supportedOses, $allowedOses);
-            
-            if (!empty($intersect)) {
+
+            if (! empty($intersect)) {
                 $result[$key] = $device;
             }
         }
+
         return $result;
     }
 
+    /**
+     * @return array<string, OperatingSystem>
+     */
     private function getGenericSupportedOses(DeviceType $device): array
     {
         $list = match ($device) {
@@ -378,20 +487,31 @@ final class UserAgentBuilder
             ],
             default => [],
         };
-        
+
         $map = [];
         foreach ($list as $os) {
             $map[$os->value] = $os;
         }
+
         return $map;
     }
 
+    /**
+     * @param array<mixed> $items
+     */
     private function pickRandom(array $items): mixed
     {
         $key = array_rand($items);
+
         return $items[$key];
     }
 
+    /**
+     * @param array<string, BrowserFamily>   $browsers
+     * @param array<string, OperatingSystem> $allowedOses
+     *
+     * @return array<string, BrowserFamily>
+     */
     private function filterBrowsersByAllowedOses(array $browsers, array $allowedOses): array
     {
         // If allowedOses is technically "all supported OSes", we don't need to filter strict.
@@ -405,9 +525,13 @@ final class UserAgentBuilder
                 $result[$key] = $browser;
             }
         }
+
         return $result;
     }
 
+    /**
+     * @param array<string, OperatingSystem> $allowedOses
+     */
     private function browserSupportsAnyOs(BrowserFamily $browser, array $allowedOses): bool
     {
         // Get all OSs this browser supports across ALL devices
@@ -421,6 +545,6 @@ final class UserAgentBuilder
         }
 
         // Check overlap
-        return !empty(array_intersect_key($supportedOses, $allowedOses));
+        return ! empty(array_intersect_key($supportedOses, $allowedOses));
     }
 }

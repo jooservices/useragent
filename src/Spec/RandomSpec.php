@@ -14,8 +14,7 @@ final readonly class RandomSpec
         public int $historyWindow = 100,
         public int $retryBudget = 10,
         public bool $enableHistory = true,
-    ) {
-    }
+    ) {}
 
     /**
      * Create from array.

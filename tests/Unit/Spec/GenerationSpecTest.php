@@ -21,7 +21,7 @@ final class GenerationSpecTest extends TestCase
     /** @test */
     public function test_it_creates_empty_spec(): void
     {
-        $spec = new GenerationSpec();
+        $spec = new GenerationSpec;
 
         $this->assertTrue($spec->isEmpty());
         $this->assertNull($spec->browser);
@@ -169,7 +169,7 @@ final class GenerationSpecTest extends TestCase
             ->tags(['popular'])
             ->riskLevel(RiskLevel::Low)
             ->weights(['browser' => 0.8])
-            ->randomSpec(new RandomSpec());
+            ->randomSpec(new RandomSpec);
 
         $this->assertInstanceOf(GenerationSpecBuilder::class, $builder);
 

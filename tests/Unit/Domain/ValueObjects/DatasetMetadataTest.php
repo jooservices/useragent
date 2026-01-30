@@ -27,7 +27,7 @@ final class DatasetMetadataTest extends TestCase
     {
         $name = $this->faker->word();
         $version = $this->faker->numerify('#.#.#');
-        $updatedAt = new DateTimeImmutable();
+        $updatedAt = new DateTimeImmutable;
         $license = $this->faker->word();
         $source = $this->faker->url();
 
@@ -74,7 +74,7 @@ final class DatasetMetadataTest extends TestCase
         $metadata = new DatasetMetadata(
             $this->faker->word(),
             '1.0.0',
-            new DateTimeImmutable(),
+            new DateTimeImmutable,
             'MIT'
         );
 

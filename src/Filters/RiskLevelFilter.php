@@ -17,8 +17,7 @@ final class RiskLevelFilter
      */
     public function __construct(
         private readonly array $allowedLevels
-    ) {
-    }
+    ) {}
 
     /**
      * Check if template's risk level is allowed.

@@ -14,8 +14,7 @@ final class VersionRangeFilter
     public function __construct(
         private readonly ?int $minVersion = null,
         private readonly ?int $maxVersion = null
-    ) {
-    }
+    ) {}
 
     /**
      * Check if template's version range overlaps with filter range.

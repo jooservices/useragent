@@ -28,10 +28,10 @@ final class AvoidRecentStrategy
     public function __construct(int $historySize = 10, int $maxRetries = 5)
     {
         $this->templates = [
-            new ChromeTemplate(),
-            new FirefoxTemplate(),
-            new SafariTemplate(),
-            new EdgeTemplate(),
+            new ChromeTemplate,
+            new FirefoxTemplate,
+            new SafariTemplate,
+            new EdgeTemplate,
         ];
 
         $this->history = new LruHistory($historySize);

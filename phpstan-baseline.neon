@@ -1,43 +1,289 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Parameter \$spec of method JOOservices\\UserAgent\\Contracts\\RandomStrategyInterface\:\:select\(\) has invalid type JOOservices\\UserAgent\\Spec\\RandomSpec\.$#'
-			identifier: class.notFound
+			message: '#^Parameter \#1 \$stream of function fclose expects resource, resource\|false given\.$#'
+			identifier: argument.type
 			count: 1
-			path: src/Contracts/RandomStrategyInterface.php
+			path: src/Console/ConsoleApp.php
 
 		-
-			message: '#^Parameter \$browser of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects JOOservices\\UserAgent\\Domain\\Enums\\BrowserFamily\|null, mixed given\.$#'
+			message: '#^Parameter \#1 \$stream of function fgets expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Console/ConsoleApp.php
+
+		-
+			message: '#^Property JOOservices\\UserAgent\\Facade\\UserAgentBuilder\:\:\$botType \(JOOservices\\UserAgent\\Domain\\Enums\\BotType\|null\) is never assigned JOOservices\\UserAgent\\Domain\\Enums\\BotType so it can be removed from the property type\.$#'
+			identifier: property.unusedType
+			count: 1
+			path: src/Facade/UserAgentBuilder.php
+
+		-
+			message: '#^Property JOOservices\\UserAgent\\Facade\\UserAgentBuilder\:\:\$maxAgeMonths is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/Facade/UserAgentBuilder.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 3
+			path: src/Facade/UserAgentBuilder.php
+
+		-
+			message: '#^PHPDoc tag @SuppressWarnings has invalid value \(\(PHPMD\.UnusedFormalParameter\)\)\: Unexpected token "\.UnusedFormalParameter\)", expected ''\)'' at offset 73 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Pickers/ModelPicker.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Renderers/UserAgentRenderer.php
+
+		-
+			message: '#^Offset 1 on array\{list\<string\>, list\<non\-empty\-string\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/Renderers/UserAgentRenderer.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: JOOservices\\UserAgent\\Domain\\Enums\\OperatingSystem\:\:Other$#'
+			identifier: match.unhandled
+			count: 1
+			path: src/Service/UserAgentService.php
+
+		-
+			message: '#^Property JOOservices\\UserAgent\\Service\\UserAgentService\:\:\$strategy is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/Service/UserAgentService.php
+
+		-
+			message: '#^Parameter \#1 \$data of static method JOOservices\\UserAgent\\Spec\\RandomSpec\:\:fromArray\(\) expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method JOOservices\\UserAgent\\Domain\\Enums\\BrowserFamily\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method JOOservices\\UserAgent\\Domain\\Enums\\DeviceType\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method JOOservices\\UserAgent\\Domain\\Enums\\Engine\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method JOOservices\\UserAgent\\Domain\\Enums\\OperatingSystem\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method JOOservices\\UserAgent\\Domain\\Enums\\RiskLevel\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \$arch of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \$channel of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \$locale of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \$strategy of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \$tags of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects array\<string\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \$versionExact of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \$versionMax of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \$versionMin of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \$weights of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects array\<string, mixed\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/GenerationSpec.php
+
+		-
+			message: '#^Parameter \$enableHistory of class JOOservices\\UserAgent\\Spec\\RandomSpec constructor expects bool, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/RandomSpec.php
+
+		-
+			message: '#^Parameter \$historyWindow of class JOOservices\\UserAgent\\Spec\\RandomSpec constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/RandomSpec.php
+
+		-
+			message: '#^Parameter \$retryBudget of class JOOservices\\UserAgent\\Spec\\RandomSpec constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/RandomSpec.php
+
+		-
+			message: '#^Parameter \$seed of class JOOservices\\UserAgent\\Spec\\RandomSpec constructor expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Spec/RandomSpec.php
+
+		-
+			message: '#^PHPDoc tag @SuppressWarnings has invalid value \(\(PHPMD\.UnusedFormalParameter\)\)\: Unexpected token "\.UnusedFormalParameter\)", expected ''\)'' at offset 34 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Templates/Browsers/SafariTemplate.php
+
+		-
+			message: '#^Parameter \#1 \$uaString of class JOOservices\\UserAgent\\Domain\\ValueObjects\\UserAgent constructor expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: tests/Support/UserAgentFactory.php
 
 		-
-			message: '#^Parameter \$device of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects JOOservices\\UserAgent\\Domain\\Enums\\DeviceType\|null, mixed given\.$#'
+			message: '#^Parameter \#1 \$actual of method PHPUnit\\Framework\\Assert\:\:assertJson\(\) expects string, string\|false given\.$#'
 			identifier: argument.type
 			count: 1
-			path: tests/Support/UserAgentFactory.php
+			path: tests/Unit/Console/ConsoleAppTest.php
 
 		-
-			message: '#^Parameter \$engine of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects JOOservices\\UserAgent\\Domain\\Enums\\Engine\|null, mixed given\.$#'
+			message: '#^Parameter \#1 \$haystack of function str_contains expects string, string\|false given\.$#'
 			identifier: argument.type
-			count: 1
-			path: tests/Support/UserAgentFactory.php
+			count: 3
+			path: tests/Unit/Console/ConsoleAppTest.php
 
 		-
-			message: '#^Parameter \$os of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects JOOservices\\UserAgent\\Domain\\Enums\\OperatingSystem\|null, mixed given\.$#'
+			message: '#^Parameter \#1 \$json of function json_decode expects string, string\|false given\.$#'
 			identifier: argument.type
 			count: 1
-			path: tests/Support/UserAgentFactory.php
+			path: tests/Unit/Console/ConsoleAppTest.php
 
 		-
-			message: '#^Parameter \$riskLevel of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects JOOservices\\UserAgent\\Domain\\Enums\\RiskLevel\|null, mixed given\.$#'
+			message: '#^Parameter \#2 \$haystack of method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, string\|false given\.$#'
 			identifier: argument.type
-			count: 1
-			path: tests/Support/UserAgentFactory.php
+			count: 8
+			path: tests/Unit/Console/ConsoleAppTest.php
 
 		-
-			message: '#^Parameter \$tags of class JOOservices\\UserAgent\\Domain\\ValueObjects\\Meta constructor expects array\<string\>, array\|string given\.$#'
+			message: '#^Parameter \#2 \$string of function explode expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 4
+			path: tests/Unit/Console/ConsoleAppTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsString\(\) with string will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/Domain/Enums/EngineTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsString\(\) with string will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/Domain/Enums/OperatingSystemTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/Facade/UserAgentTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsString\(\) with string will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/Service/UserAgentServiceTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with JOOservices\\UserAgent\\Templates\\BrowserTemplate will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 4
+			path: tests/Unit/Strategies/StrategiesTest.php
+
+		-
+			message: '#^Method PHPUnit\\Framework\\Assert\:\:assertEquals\(\) invoked with 4 parameters, 2\-3 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: tests/Unit/Strategies/StrategiesTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsString\(\) with string will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 2
+			path: tests/Unit/Templates/Bots/BotTemplateTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 6
+			path: tests/Unit/Templates/Catalogs/CatalogsTest.php
+
+		-
+			message: '#^Call to method PHPUnit\\Framework\\Assert\:\:assertIsString\(\) with string will always evaluate to true\.$#'
+			identifier: method.alreadyNarrowedType
+			count: 5
+			path: tests/Unit/Templates/Catalogs/CatalogsTest.php
+
+		-
+			message: '#^Parameter \$tags of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects array\<string\>, array\<int, int\|string\> given\.$#'
 			identifier: argument.type
 			count: 1
-			path: tests/Support/UserAgentFactory.php
+			path: tests/Unit/Validation/SpecValidatorTest.php
+
+		-
+			message: '#^Parameter \$tags of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects array\<string\>, array\<int, list\<string\>\|string\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Validation/SpecValidatorTest.php
+
+		-
+			message: '#^Parameter \$tags of class JOOservices\\UserAgent\\Spec\\GenerationSpec constructor expects array\<string\>, array\<int, string\|null\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Unit/Validation/SpecValidatorTest.php

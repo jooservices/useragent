@@ -18,8 +18,8 @@ final class UserAgentRendererTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->renderer = new UserAgentRenderer();
-        $this->template = new ChromeTemplate();
+        $this->renderer = new UserAgentRenderer;
+        $this->template = new ChromeTemplate;
     }
 
     public function test_it_renders_desktop_user_agent(): void

@@ -11,7 +11,7 @@ final class LruHistoryTest extends TestCase
 {
     public function test_it_starts_empty(): void
     {
-        $history = new LruHistory();
+        $history = new LruHistory;
 
         $this->assertSame(0, $history->size());
         $this->assertFalse($history->contains('test'));
@@ -19,7 +19,7 @@ final class LruHistoryTest extends TestCase
 
     public function test_it_adds_entries(): void
     {
-        $history = new LruHistory();
+        $history = new LruHistory;
 
         $history->add('UA1');
         $history->add('UA2');
@@ -31,7 +31,7 @@ final class LruHistoryTest extends TestCase
 
     public function test_it_does_not_contain_non_existent_entry(): void
     {
-        $history = new LruHistory();
+        $history = new LruHistory;
         $history->add('UA1');
 
         $this->assertFalse($history->contains('UA2'));
@@ -68,7 +68,7 @@ final class LruHistoryTest extends TestCase
 
     public function test_it_clears_all_entries(): void
     {
-        $history = new LruHistory();
+        $history = new LruHistory;
         $history->add('UA1');
         $history->add('UA2');
 
@@ -81,7 +81,7 @@ final class LruHistoryTest extends TestCase
 
     public function test_it_returns_all_entries(): void
     {
-        $history = new LruHistory();
+        $history = new LruHistory;
         $history->add('UA1');
         $history->add('UA2');
 
@@ -94,7 +94,7 @@ final class LruHistoryTest extends TestCase
 
     public function test_it_tracks_access_order(): void
     {
-        $history = new LruHistory();
+        $history = new LruHistory;
         $history->add('UA1');
         $history->add('UA2');
         $history->add('UA3');
@@ -108,7 +108,7 @@ final class LruHistoryTest extends TestCase
 
     public function test_it_handles_duplicate_adds(): void
     {
-        $history = new LruHistory();
+        $history = new LruHistory;
         $history->add('UA1');
         $history->add('UA1'); // Duplicate
 
@@ -151,7 +151,7 @@ final class LruHistoryTest extends TestCase
 
     public function test_it_clears_access_counter_on_clear(): void
     {
-        $history = new LruHistory();
+        $history = new LruHistory;
         $history->add('UA1');
         $history->add('UA2');
 

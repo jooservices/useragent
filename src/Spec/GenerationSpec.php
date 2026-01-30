@@ -38,15 +38,14 @@ final readonly class GenerationSpec
         public array $weights = [],
         public ?RandomSpec $randomSpec = null,
         public ?string $strategy = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Start building a spec.
      */
     public static function create(): GenerationSpecBuilder
     {
-        return new GenerationSpecBuilder();
+        return new GenerationSpecBuilder;
     }
 
     /**

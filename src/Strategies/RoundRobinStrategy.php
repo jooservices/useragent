@@ -25,10 +25,10 @@ final class RoundRobinStrategy
     public function __construct()
     {
         $this->templates = [
-            new ChromeTemplate(),
-            new FirefoxTemplate(),
-            new SafariTemplate(),
-            new EdgeTemplate(),
+            new ChromeTemplate,
+            new FirefoxTemplate,
+            new SafariTemplate,
+            new EdgeTemplate,
         ];
     }
 

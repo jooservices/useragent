@@ -37,10 +37,10 @@ final class FiltersTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->chrome = new ChromeTemplate();
-        $this->firefox = new FirefoxTemplate();
-        $this->safari = new SafariTemplate();
-        $this->edge = new EdgeTemplate();
+        $this->chrome = new ChromeTemplate;
+        $this->firefox = new FirefoxTemplate;
+        $this->safari = new SafariTemplate;
+        $this->edge = new EdgeTemplate;
         $this->allTemplates = [$this->chrome, $this->firefox, $this->safari, $this->edge];
     }
 
@@ -170,7 +170,7 @@ final class FiltersTest extends TestCase
     // VersionRangeFilter Tests
     public function test_version_range_filter_no_constraints_matches_all(): void
     {
-        $filter = new VersionRangeFilter();
+        $filter = new VersionRangeFilter;
 
         $this->assertTrue($filter->matches($this->chrome));
         $this->assertTrue($filter->matches($this->firefox));

@@ -16,7 +16,49 @@ $ua = $service->generate();
 
 echo $ua;
 // Example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
+// Example: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36
 ```
+
+## Static Facade API (Recommended)
+
+The `UserAgent` facade provides a fluent, static interface for generating strings. This is often more convenient than instantiating the service directly.
+
+### Usage
+```php
+use JOOservices\UserAgent\UserAgent;
+
+// Simple
+echo UserAgent::generate();
+
+// Chaining Constraints
+echo UserAgent::firefox()->windows()->generate();
+echo UserAgent::safari()->mobile()->generate();
+```
+
+### Unique Generation
+Guarantees uniqueness within the current request lifecycle. Useful for scraping loops or seeding databases.
+
+```php
+for ($i = 0; $i < 50; $i++) {
+    // Each UA is guaranteed to be distinct from the previous ones
+    echo UserAgent::unique()->generate();
+}
+
+// Reset the uniqueness history if needed
+UserAgent::resetUnique();
+```
+
+### Exclusion Mode
+Inverts the selection logic.
+
+```php
+// Generate any UA that is NOT Chrome
+echo UserAgent::exclude()->chrome()->generate();
+
+// Generate any UA that is NOT Mobile
+echo UserAgent::exclude()->mobile()->generate();
+```
+
 
 ## Using Profiles (Shortcuts)
 

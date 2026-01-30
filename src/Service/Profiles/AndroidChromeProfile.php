@@ -17,8 +17,7 @@ final class AndroidChromeProfile
 {
     public function __construct(
         private readonly UserAgentService $service
-    ) {
-    }
+    ) {}
 
     /**
      * Generate Android Chrome UA on mobile phone.

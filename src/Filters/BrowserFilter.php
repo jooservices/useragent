@@ -17,8 +17,7 @@ final class BrowserFilter
      */
     public function __construct(
         private readonly array $allowedBrowsers
-    ) {
-    }
+    ) {}
 
     /**
      * Check if template matches filter.

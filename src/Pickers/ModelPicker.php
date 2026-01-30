@@ -15,8 +15,10 @@ final class ModelPicker
 {
     /**
      * Pick model for given OS.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function pick(OperatingSystem $os, GenerationSpec $spec, ?int $seed = null): string
+    public function pick(OperatingSystem $os, GenerationSpec $_spec, ?int $seed = null): string
     {
         return match ($os) {
             OperatingSystem::Android => ModelCatalog::getRandomAndroidModel($seed),

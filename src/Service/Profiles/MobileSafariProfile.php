@@ -17,8 +17,7 @@ final class MobileSafariProfile
 {
     public function __construct(
         private readonly UserAgentService $service
-    ) {
-    }
+    ) {}
 
     /**
      * Generate mobile Safari UA on iPhone.

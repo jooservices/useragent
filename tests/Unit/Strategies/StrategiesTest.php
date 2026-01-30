@@ -20,7 +20,7 @@ final class StrategiesTest extends TestCase
 
     public function test_uniform_strategy_returns_browser_template(): void
     {
-        $strategy = new UniformStrategy();
+        $strategy = new UniformStrategy;
 
         $template = $strategy->select();
 
@@ -35,7 +35,7 @@ final class StrategiesTest extends TestCase
 
     public function test_uniform_strategy_is_deterministic_with_seed(): void
     {
-        $strategy = new UniformStrategy();
+        $strategy = new UniformStrategy;
 
         $template1 = $strategy->select(12345);
         $template2 = $strategy->select(12345);
@@ -45,7 +45,7 @@ final class StrategiesTest extends TestCase
 
     public function test_uniform_strategy_returns_all_templates(): void
     {
-        $strategy = new UniformStrategy();
+        $strategy = new UniformStrategy;
 
         $templates = $strategy->getTemplates();
 
@@ -54,7 +54,7 @@ final class StrategiesTest extends TestCase
 
     public function test_uniform_strategy_has_equal_distribution(): void
     {
-        $strategy = new UniformStrategy();
+        $strategy = new UniformStrategy;
         $counts = [];
 
         // Run many times to check distribution
@@ -72,7 +72,7 @@ final class StrategiesTest extends TestCase
 
     public function test_weighted_strategy_returns_browser_template(): void
     {
-        $strategy = new WeightedStrategy();
+        $strategy = new WeightedStrategy;
 
         $template = $strategy->select();
 
@@ -87,7 +87,7 @@ final class StrategiesTest extends TestCase
 
     public function test_weighted_strategy_is_deterministic_with_seed(): void
     {
-        $strategy = new WeightedStrategy();
+        $strategy = new WeightedStrategy;
 
         $template1 = $strategy->select(99999);
         $template2 = $strategy->select(99999);
@@ -97,7 +97,7 @@ final class StrategiesTest extends TestCase
 
     public function test_weighted_strategy_returns_templates_with_weights(): void
     {
-        $strategy = new WeightedStrategy();
+        $strategy = new WeightedStrategy;
 
         $templatesWithWeights = $strategy->getTemplatesWithWeights();
 
@@ -111,7 +111,7 @@ final class StrategiesTest extends TestCase
 
     public function test_weighted_strategy_total_weight_matches_sum(): void
     {
-        $strategy = new WeightedStrategy();
+        $strategy = new WeightedStrategy;
 
         $totalWeight = $strategy->getTotalWeight();
         $templatesWithWeights = $strategy->getTemplatesWithWeights();
@@ -123,7 +123,7 @@ final class StrategiesTest extends TestCase
 
     public function test_weighted_strategy_prefers_chrome(): void
     {
-        $strategy = new WeightedStrategy();
+        $strategy = new WeightedStrategy;
         $counts = [];
 
         // Run many times to check distribution
@@ -142,7 +142,7 @@ final class StrategiesTest extends TestCase
 
     public function test_round_robin_strategy_cycles_through_browsers(): void
     {
-        $strategy = new RoundRobinStrategy();
+        $strategy = new RoundRobinStrategy;
 
         $browsers = [];
         for ($i = 0; $i < 4; $i++) {
@@ -156,7 +156,7 @@ final class StrategiesTest extends TestCase
 
     public function test_round_robin_strategy_wraps_around(): void
     {
-        $strategy = new RoundRobinStrategy();
+        $strategy = new RoundRobinStrategy;
 
         // Get first browser
         $first = $strategy->select()->getBrowser()->value;
@@ -174,7 +174,7 @@ final class StrategiesTest extends TestCase
 
     public function test_round_robin_strategy_resets_to_start(): void
     {
-        $strategy = new RoundRobinStrategy();
+        $strategy = new RoundRobinStrategy;
 
         $first = $strategy->select()->getBrowser()->value;
         $strategy->select();
@@ -189,7 +189,7 @@ final class StrategiesTest extends TestCase
 
     public function test_round_robin_strategy_tracks_current_index(): void
     {
-        $strategy = new RoundRobinStrategy();
+        $strategy = new RoundRobinStrategy;
 
         $this->assertSame(0, $strategy->getCurrentIndex());
 
@@ -202,7 +202,7 @@ final class StrategiesTest extends TestCase
 
     public function test_round_robin_strategy_returns_correct_count(): void
     {
-        $strategy = new RoundRobinStrategy();
+        $strategy = new RoundRobinStrategy;
 
         $this->assertSame(4, $strategy->getCount());
     }
@@ -211,7 +211,7 @@ final class StrategiesTest extends TestCase
 
     public function test_avoid_recent_strategy_returns_browser_template(): void
     {
-        $strategy = new AvoidRecentStrategy();
+        $strategy = new AvoidRecentStrategy;
 
         $template = $strategy->select();
 
@@ -250,7 +250,7 @@ final class StrategiesTest extends TestCase
 
     public function test_avoid_recent_strategy_clears_history(): void
     {
-        $strategy = new AvoidRecentStrategy();
+        $strategy = new AvoidRecentStrategy;
 
         $strategy->select();
         $strategy->select();
@@ -277,8 +277,8 @@ final class StrategiesTest extends TestCase
 
     public function test_avoid_recent_strategy_is_deterministic_with_seed(): void
     {
-        $strategy1 = new AvoidRecentStrategy();
-        $strategy2 = new AvoidRecentStrategy();
+        $strategy1 = new AvoidRecentStrategy;
+        $strategy2 = new AvoidRecentStrategy;
 
         $template1 = $strategy1->select(77777);
         $template2 = $strategy2->select(77777);

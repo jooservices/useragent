@@ -18,8 +18,8 @@ final class VersionPickerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->picker = new VersionPicker();
-        $this->template = new ChromeTemplate();
+        $this->picker = new VersionPicker;
+        $this->template = new ChromeTemplate;
     }
 
     public function test_it_picks_exact_version_when_specified(): void
@@ -122,7 +122,7 @@ final class VersionPickerTest extends TestCase
 
     public function test_it_picks_stable_version_when_no_constraints(): void
     {
-        $spec = new GenerationSpec();
+        $spec = new GenerationSpec;
 
         $version = $this->picker->pick($this->template, $spec);
 

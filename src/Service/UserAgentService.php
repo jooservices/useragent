@@ -39,13 +39,13 @@ final class UserAgentService
 
     public function __construct()
     {
-        $this->versionPicker = new VersionPicker();
-        $this->modelPicker = new ModelPicker();
-        $this->localePicker = new LocalePicker();
-        $this->archPicker = new ArchPicker();
-        $this->renderer = new UserAgentRenderer();
-        $this->validator = new SpecValidator();
-        $this->strategy = new WeightedStrategy();
+        $this->versionPicker = new VersionPicker;
+        $this->modelPicker = new ModelPicker;
+        $this->localePicker = new LocalePicker;
+        $this->archPicker = new ArchPicker;
+        $this->renderer = new UserAgentRenderer;
+        $this->validator = new SpecValidator;
+        $this->strategy = new WeightedStrategy;
     }
 
     /**
@@ -53,7 +53,7 @@ final class UserAgentService
      */
     public function generate(?GenerationSpec $spec = null, ?int $seed = null): string
     {
-        $spec = $spec ?? new GenerationSpec();
+        $spec = $spec ?? new GenerationSpec;
 
         // Validate spec constraints
         $this->validator->validate($spec);
@@ -84,10 +84,10 @@ final class UserAgentService
     {
         // 1. Get all available templates
         $candidates = [
-            new \JOOservices\UserAgent\Templates\Browsers\ChromeTemplate(),
-            new \JOOservices\UserAgent\Templates\Browsers\FirefoxTemplate(),
-            new \JOOservices\UserAgent\Templates\Browsers\SafariTemplate(),
-            new \JOOservices\UserAgent\Templates\Browsers\EdgeTemplate(),
+            new \JOOservices\UserAgent\Templates\Browsers\ChromeTemplate,
+            new \JOOservices\UserAgent\Templates\Browsers\FirefoxTemplate,
+            new \JOOservices\UserAgent\Templates\Browsers\SafariTemplate,
+            new \JOOservices\UserAgent\Templates\Browsers\EdgeTemplate,
         ];
 
         // 2. Build filters based on spec
@@ -200,7 +200,7 @@ final class UserAgentService
      * @return array<string, mixed>
      */
     private function buildContext(
-        BrowserTemplate $template,
+        BrowserTemplate $_template,
         DeviceType $device,
         OperatingSystem $os,
         int $version,
@@ -232,10 +232,10 @@ final class UserAgentService
     {
         return match ($os) {
             OperatingSystem::Windows => mt_rand(0, 1) ? '10.0' : '11.0',
-            OperatingSystem::MacOS => '14.' . mt_rand(0, 5),
-            OperatingSystem::Linux => '5.' . mt_rand(10, 19),
+            OperatingSystem::MacOS => '14.'.mt_rand(0, 5),
+            OperatingSystem::Linux => '5.'.mt_rand(10, 19),
             OperatingSystem::Android => (string) mt_rand(10, 14),
-            OperatingSystem::iOS => '17.' . mt_rand(0, 4),
+            OperatingSystem::iOS => '17.'.mt_rand(0, 4),
             OperatingSystem::ChromeOS => (string) mt_rand(120, 145),
         };
     }

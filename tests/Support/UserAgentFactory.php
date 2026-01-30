@@ -21,8 +21,7 @@ final class UserAgentFactory
 {
     public function __construct(
         private readonly Generator $faker,
-    ) {
-    }
+    ) {}
 
     /**
      * @param array<string, mixed> $overrides
@@ -113,7 +112,6 @@ final class UserAgentFactory
      * @param array<string, mixed> $overrides
      * @param string|class-string  $type
      * @param callable(): T        $default
-     *
      */
     private function resolveValue(array $overrides, string $key, string $type, callable $default): mixed
     {

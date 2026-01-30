@@ -19,7 +19,7 @@ final class ProfilesTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->service = new UserAgentService();
+        $this->service = new UserAgentService;
         $this->profiles = new Profiles($this->service);
     }
 

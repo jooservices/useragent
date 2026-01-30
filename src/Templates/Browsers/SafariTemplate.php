@@ -31,11 +31,17 @@ final class SafariTemplate extends BrowserTemplate
         return Engine::WebKit;
     }
 
+    /**
+     * @return array<DeviceType>
+     */
     public function getSupportedDevices(): array
     {
         return [DeviceType::Desktop, DeviceType::Mobile, DeviceType::Tablet];
     }
 
+    /**
+     * @return array<OperatingSystem>
+     */
     public function getSupportedOs(DeviceType $device): array
     {
         return match ($device) {
@@ -90,7 +96,10 @@ final class SafariTemplate extends BrowserTemplate
         };
     }
 
-    public function getEngineVersion(int $browserVersion): string
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function getEngineVersion(int $_browserVersion): string
     {
         // WebKit version is relatively stable
         return '605.1.15';

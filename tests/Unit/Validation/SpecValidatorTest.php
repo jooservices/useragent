@@ -18,7 +18,7 @@ final class SpecValidatorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->validator = new SpecValidator();
+        $this->validator = new SpecValidator;
     }
 
     // ========== HAPPY PATH TESTS ==========
@@ -27,7 +27,7 @@ final class SpecValidatorTest extends TestCase
     public function test_it_validates_empty_spec(): void
     {
         $this->expectNotToPerformAssertions();
-        $spec = new GenerationSpec();
+        $spec = new GenerationSpec;
 
         $this->validator->validate($spec);
     }

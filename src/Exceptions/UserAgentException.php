@@ -9,6 +9,4 @@ use Exception;
 /**
  * Base exception for all UserAgent package exceptions.
  */
-class UserAgentException extends Exception
-{
-}
+class UserAgentException extends Exception {}

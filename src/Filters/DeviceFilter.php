@@ -17,8 +17,7 @@ final class DeviceFilter
      */
     public function __construct(
         private readonly array $allowedDevices
-    ) {
-    }
+    ) {}
 
     /**
      * Check if template supports any of the allowed devices.

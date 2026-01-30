@@ -20,7 +20,7 @@ final class EndToEndGenerationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->service = new UserAgentService();
+        $this->service = new UserAgentService;
     }
 
     public function test_it_generates_complete_desktop_chrome_ua(): void

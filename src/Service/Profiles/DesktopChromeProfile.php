@@ -17,8 +17,7 @@ final class DesktopChromeProfile
 {
     public function __construct(
         private readonly UserAgentService $service
-    ) {
-    }
+    ) {}
 
     /**
      * Generate desktop Chrome UA on Windows.

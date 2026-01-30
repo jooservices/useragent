@@ -18,8 +18,7 @@ final class LruHistory
 
     public function __construct(
         private readonly int $maxSize = 100
-    ) {
-    }
+    ) {}
 
     /**
      * Check if UA was recently generated.

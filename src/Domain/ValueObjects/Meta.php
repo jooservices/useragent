@@ -27,6 +27,5 @@ final readonly class Meta
         public ?MarketShare $marketShare = null,
         public ?RiskLevel $riskLevel = null,
         public array $tags = [],
-    ) {
-    }
+    ) {}
 }

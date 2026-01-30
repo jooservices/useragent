@@ -17,7 +17,7 @@ final class UserAgentServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->service = new UserAgentService();
+        $this->service = new UserAgentService;
     }
 
     public function test_it_generates_user_agent_with_default_spec(): void

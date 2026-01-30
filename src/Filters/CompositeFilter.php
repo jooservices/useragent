@@ -17,8 +17,7 @@ final class CompositeFilter
     public function __construct(
         private readonly array $filters,
         private readonly bool $useAndLogic = true
-    ) {
-    }
+    ) {}
 
     /**
      * Check if template matches composite filter.

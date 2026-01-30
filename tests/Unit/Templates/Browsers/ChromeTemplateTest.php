@@ -18,7 +18,7 @@ final class ChromeTemplateTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->template = new ChromeTemplate();
+        $this->template = new ChromeTemplate;
     }
 
     public function test_it_returns_correct_browser(): void

@@ -43,9 +43,31 @@ The library includes a zero-dependency CLI tool for generating strings from the 
 
 ## Quick Start
 
-### Basic Usage
+### Static Facade (Recommended)
 
-Generate a random, realistic User-Agent string using weighted market share probabilities:
+The easiest way to generate a User-Agent string is via the fluent static API:
+
+```php
+use JOOservices\UserAgent\UserAgent;
+
+// Simple random generation
+echo UserAgent::generate();
+
+// Fluent Chaining
+echo UserAgent::chrome()->windows()->generate();
+echo UserAgent::firefox()->linux()->generate();
+echo UserAgent::safari()->mobile()->generate();
+
+// Unique Generation (Guarantees no duplicates in a loop)
+$ua = UserAgent::unique()->generate();
+
+// Exclusion (Invert selection)
+// "Give me anything EXCEPT Mobile"
+echo UserAgent::exclude()->mobile()->generate();
+```
+
+### Legacy / Service Usage
+
 
 ```php
 use JOOservices\UserAgent\Service\UserAgentService;
@@ -122,7 +144,7 @@ assert($ua1 === $ua2); // True
 
 ## Requirements
 
-- PHP 8.2+
+- PHP 8.5+
 - `random_int()` support
 
 ## License
