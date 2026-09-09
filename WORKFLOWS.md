@@ -13,6 +13,6 @@ All workflows run on GitHub-hosted `ubuntu-latest` runners. PHP commands use the
 | OpenSSF Scorecard | Push to `develop`, weekly, manual | Publish repository security scorecard |
 | Release | Version tags | Verify the tag is on `master`, run the quality gate, create GitHub Release notes |
 
-`scorecard.yml` runs on push to `develop`, weekly, and manual dispatch.
+`scorecard.yml` runs on Push to `develop`, weekly, and manual dispatch.
 
 Branch protection is configured after green checks have established their names. No workflow uses self-hosted runners.
