@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: PHP 8.5 quality gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Build tooling image
+        run: docker compose build php
+      - name: Install locked dependencies
+        run: docker compose run --rm php composer install --no-interaction --prefer-dist
+      - name: Validate package
+        run: docker compose run --rm php composer validate --strict
+      - name: Run lint, tests, and coverage
+        run: docker compose run --rm php composer ci
+      - name: Audit dependencies
+        run: docker compose run --rm php composer audit
+
+  quality-gate:
+    name: Quality gate
+    needs: quality
+    runs-on: ubuntu-latest
+    steps:
+      - run: true

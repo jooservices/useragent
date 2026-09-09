@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "revision": "2026.08.28.1",
+  "name": "jooservices-bundled",
+  "license": "MIT",
+  "terms": "JOOservices curated synthetic User-Agent profiles for tests and fixtures. Not vendor-official. Not a live-device dump. Weights are editorial, not certified market share.",
+  "source": "https://github.com/jooservices/useragent",
+  "fetchedAt": "2026-08-28",
+  "effectiveAt": "2026-08-28",
+  "checksumSha256": "e7ac7e6a28fd24303cb1b19017d361802b0c3c3f8ee4d5715e771917e5a6dbf3"
+}

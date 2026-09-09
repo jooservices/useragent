@@ -1,0 +1,25 @@
+name: Post-merge CI
+
+on:
+  push:
+    branches: [master, develop]
+
+concurrency:
+  group: post-merge-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - run: docker compose build php
+      - run: docker compose run --rm php composer install --no-interaction --prefer-dist
+      - run: docker compose run --rm php composer ci
+      - run: docker compose run --rm php composer audit
