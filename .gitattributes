@@ -1,0 +1,7 @@
+* text=auto eol=lf
+/bin/useragent text eol=lf
+/tests/Fixtures/golden/*.json linguist-generated=true
+tests export-ignore
+.github export-ignore
+knowledge.md export-ignore
+implementation.md export-ignore

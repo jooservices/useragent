@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use JOOservices\UserAgent\Console\Application;
+use JOOservices\UserAgent\Generator;
+
+require dirname(__DIR__).'/vendor/autoload.php';
+
+/** @var list<string> $argv */
+exit((new Application(Generator::create()))->run($argv));

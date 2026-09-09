@@ -1,0 +1,6 @@
+{
+  "chrome":{"engine":"blink","versions":[{"major":139,"full":"139.0.7258.0","releasedAt":"2026-04-01","weight":5},{"major":145,"full":"145.0.7632.46","releasedAt":"2026-08-01","weight":20}]},
+  "firefox":{"engine":"gecko","versions":[{"major":141,"full":"141.0","releasedAt":"2026-04-15","weight":5},{"major":147,"full":"147.0","releasedAt":"2026-08-05","weight":20}]},
+  "safari":{"engine":"webkit","versions":[{"major":25,"full":"25.5","releasedAt":"2026-03-20","weight":5},{"major":26,"full":"26.0","releasedAt":"2026-08-10","weight":20}]},
+  "edge":{"engine":"blink","versions":[{"major":139,"full":"139.0.3405.86","releasedAt":"2026-04-03","weight":5},{"major":145,"full":"145.0.3800.52","releasedAt":"2026-08-03","weight":20}]}
+}
