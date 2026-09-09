@@ -1,0 +1,6 @@
+[
+  {"browser":"chrome","device":"desktop","platform":"windows","weight":10},
+  {"browser":"chrome","device":"mobile","platform":"android","weight":10},
+  {"browser":"safari","device":"desktop","platform":"macos","weight":5},
+  {"browser":"safari","device":"tablet","platform":"ios","weight":5}
+]

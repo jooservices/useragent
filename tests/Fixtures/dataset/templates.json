@@ -1,0 +1,6 @@
+{
+  "chrome|desktop|windows":"Mozilla/5.0 ({osToken}; {archToken}) Chrome/{fullVersion}",
+  "chrome|mobile|android":"Mozilla/5.0 (Android {osToken}; {model}) Chrome/{fullVersion} Mobile",
+  "safari|desktop|macos":"Mozilla/5.0 (Macintosh; {archToken} {osToken}) Version/{fullVersion} Safari/605.1.15",
+  "safari|tablet|ios":"Mozilla/5.0 ({deviceToken}; CPU OS {osToken}) Version/{fullVersion} Safari/605.1.15"
+}

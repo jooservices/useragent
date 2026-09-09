@@ -1,0 +1,45 @@
+{
+  "userAgent": "Mozilla/5.0 (Macintosh; ARM64 Mac OS X 15_0) Version/26.0 Safari/605.1.15",
+  "profile": {
+    "browser": "safari",
+    "device": "desktop",
+    "platform": "macos",
+    "engine": "webkit",
+    "browserVersion": "26.0",
+    "browserMajor": 26,
+    "osVersion": "15.0",
+    "osToken": "Mac OS X 15_0",
+    "architecture": "arm64",
+    "archToken": "ARM64",
+    "model": null,
+    "deviceToken": null,
+    "locale": null,
+    "localeRendered": false,
+    "releasedAt": "2026-08-10",
+    "provenance": {
+      "name": "fixture",
+      "schemaVersion": 1,
+      "revision": "fixture-1",
+      "license": "MIT",
+      "terms": "Synthetic test fixture.",
+      "source": "test",
+      "fetchedAt": "2026-08-28",
+      "effectiveAt": "2026-08-28",
+      "checksumSha256": "42de3e6dae2b5f467dbae440d91588df51d3f1283695704ea29e6fec27e554ac"
+    }
+  },
+  "provenance": {
+    "name": "fixture",
+    "schemaVersion": 1,
+    "revision": "fixture-1",
+    "license": "MIT",
+    "terms": "Synthetic test fixture.",
+    "source": "test",
+    "fetchedAt": "2026-08-28",
+    "effectiveAt": "2026-08-28",
+    "checksumSha256": "42de3e6dae2b5f467dbae440d91588df51d3f1283695704ea29e6fec27e554ac"
+  },
+  "seed": 42,
+  "selection": "weighted",
+  "candidateCount": 4
+}

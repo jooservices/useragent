@@ -1,0 +1,6 @@
+{
+  "windows":{"desktop":{"osVersions":[{"id":"win11","uaVersion":"11.0","token":"Windows NT 10.0","weight":100}],"architectures":[{"id":"x86_64","arch":"x86_64","token":"Win64; x64","weight":100}]}},
+  "android":{"mobile":{"osVersions":[{"id":"android15","uaVersion":"15","token":"15","weight":100}],"architectures":[{"id":"arm64","arch":"arm64","token":"ARM64","weight":100}]}},
+  "macos":{"desktop":{"osVersions":[{"id":"mac15","uaVersion":"15.0","token":"Mac OS X 15_0","weight":100}],"architectures":[{"id":"arm64","arch":"arm64","token":"ARM64","weight":100}]}},
+  "ios":{"tablet":{"deviceToken":"iPad","osVersions":[{"id":"ios18","uaVersion":"18.0","token":"18_0","weight":100}],"architectures":[{"id":"arm64","arch":"arm64","token":"ARM64","weight":100}]}}
+}
