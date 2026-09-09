@@ -1,6 +1,6 @@
 # Changelog
 
-## [4.0.0] - Unreleased
+## [4.0.0] - 2026-09-09
 
 - Rebuild generation around coherent, checksummed dataset profiles.
 - Add deterministic instance-first generation, batch uniqueness, matrix access,
