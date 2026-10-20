@@ -33,6 +33,14 @@ final class DatasetValidatorTest extends TestCase
         yield 'extra tuple key' => ['extra-key'];
         yield 'unsupported schema' => ['schema'];
         yield 'unsafe model token' => ['unsafe-model'];
+        yield 'invalid fetched date' => ['invalid-fetched-date'];
+        yield 'invalid effective date' => ['invalid-effective-date'];
+        yield 'impossible effective date' => ['impossible-effective-date'];
+        yield 'invalid release date' => ['invalid-release-date'];
+        yield 'release after effective date' => ['future-release'];
+        yield 'unknown engine override' => ['unknown-engine-override'];
+        yield 'unknown override platform' => ['unknown-override-platform'];
+        yield 'override without compatible tuple' => ['unused-engine-override'];
     }
 
     #[Test]
@@ -44,7 +52,7 @@ final class DatasetValidatorTest extends TestCase
         $compatibility = $decoded['compatibility.json'];
         /** @var array<string, string> $templates */
         $templates = $decoded['templates.json'];
-        /** @var array<string, array<string, mixed>> $browsers */
+        /** @var array<string, array{engine: string, versions: list<array{major: int, full: string, releasedAt: string, weight: int|float}>, engineOverrides?: array<string, string>}> $browsers */
         $browsers = $decoded['browsers.json'];
         /** @var array<string, list<array<string, mixed>>> $models */
         $models = $decoded['models.json'];
@@ -56,8 +64,16 @@ final class DatasetValidatorTest extends TestCase
             'empty-versions' => $browsers['chrome']['versions'] = [],
             'duplicate-tuple' => $compatibility[] = $compatibility[0],
             'extra-key' => $compatibility[0]['unexpected'] = true,
-            'schema' => $manifest['schemaVersion'] = 2,
+            'schema' => $manifest['schemaVersion'] = 3,
             'unsafe-model' => $models['android'][0]['token'] = "bad\nvalue",
+            'invalid-fetched-date' => $manifest['fetchedAt'] = 'yesterday',
+            'invalid-effective-date' => $manifest['effectiveAt'] = 'not-a-date',
+            'impossible-effective-date' => $manifest['effectiveAt'] = '2026-02-30',
+            'invalid-release-date' => $browsers['chrome']['versions'][0]['releasedAt'] = '2026-13-01',
+            'future-release' => $browsers['chrome']['versions'][0]['releasedAt'] = '2026-08-29',
+            'unknown-engine-override' => $browsers['chrome']['engineOverrides']['ios'] = 'invalid',
+            'unknown-override-platform' => $browsers['chrome']['engineOverrides']['symbian'] = 'webkit',
+            'unused-engine-override' => $browsers['safari']['engineOverrides']['android'] = 'webkit',
             default => self::fail('Unknown mutation.'),
         };
         $decoded['compatibility.json'] = $compatibility;

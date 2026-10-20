@@ -6,7 +6,7 @@ namespace JOOservices\UserAgent\Dataset;
 
 final class Schema
 {
-    public const int VERSION = 1;
+    public const int VERSION = 2;
     public const array PAYLOAD_FILES = [
         'compatibility.json',
         'browsers.json',

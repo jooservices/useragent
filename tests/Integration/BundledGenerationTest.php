@@ -19,7 +19,7 @@ final class BundledGenerationTest extends TestCase
     public function test_DS_H01_H04_bundled_dataset_checksum_loads(): void
     {
         $dataset = (new BundledDatasetRepository())->load();
-        self::assertSame('2026.08.28.1', $dataset->provenance->revision);
+        self::assertSame('2026.08.28.2', $dataset->provenance->revision);
         self::assertCount(24, $dataset->compatibility);
         self::assertSame(64, strlen($dataset->provenance->checksumSha256));
     }

@@ -17,4 +17,9 @@ final class GenerationResult extends Dto
         public readonly int $candidateCount,
     ) {
     }
+
+    public function fingerprint(): string
+    {
+        return hash('sha256', $this->userAgent);
+    }
 }

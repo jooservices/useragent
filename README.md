@@ -14,7 +14,7 @@ PHP 8.5+ deterministic generator of coherent synthetic browser User-Agent profil
 - Seeded, weighted, uniform, and round-robin profile selection
 - Immutable fluent request builder and bounded unique batch generation
 - `generatePool()` for a list of ready-to-use User-Agent strings
-- Stable profile identity for logs and fixtures
+- Human-readable profile labels and exact User-Agent fingerprints
 - Non-interactive CLI with JSON and NDJSON output
 
 ## Requirements
@@ -33,6 +33,7 @@ composer require jooservices/useragent:^4.0
 
 ```php
 use JOOservices\UserAgent\Generator;
+use JOOservices\UserAgent\Domain\UniquePolicy;
 
 $generator = Generator::create();
 $pool = $generator->builder()
@@ -40,13 +41,16 @@ $pool = $generator->builder()
     ->windows()
     ->desktop()
     ->seed(42)
-    ->generatePool(10);
+    ->generatePool(10, UniquePolicy::AllowDuplicates);
 ```
+
+Use `UniquePolicy::Fail` when every generated string must be different. Unique capacity depends on the selected filters and bundled dataset; an exhausted request throws `UniqueGenerationExhausted`. `profile->identity()` is a readable profile label and can represent multiple User-Agent strings. Use `GenerationResult::fingerprint()` to key the exact rendered string.
 
 ## Design notes
 
 - Reuse one `Generator` instance in long-running processes; it loads and validates the bundled dataset once.
 - A User-Agent string is synthetic metadata, not browser emulation.
+- `recent(6)` uses the bundled dataset's `effectiveAt` date, so seeded output remains reproducible.
 - The package performs no network access and does not accept a caller-provided dataset path.
 
 ## Documentation

@@ -52,7 +52,7 @@ final readonly class ProfileSelector
             browser: BrowserFamily::from($tuple['browser']),
             device: DeviceClass::from($tuple['device']),
             platform: Platform::from($tuple['platform']),
-            engine: Engine::from($browser['engine']),
+            engine: Engine::from($browser['engineOverrides'][$tuple['platform']] ?? $browser['engine']),
             browserVersion: $version['full'],
             browserMajor: $version['major'],
             osVersion: $operatingSystem['uaVersion'],

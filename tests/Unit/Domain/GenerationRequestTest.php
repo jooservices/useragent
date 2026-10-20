@@ -6,6 +6,7 @@ namespace JOOservices\UserAgent\Tests\Unit\Domain;
 
 use JOOservices\UserAgent\Domain\BrowserFamily;
 use JOOservices\UserAgent\Domain\GenerationRequest;
+use JOOservices\UserAgent\Domain\Platform;
 use JOOservices\UserAgent\Exceptions\InvalidRequestException;
 use JOOservices\UserAgent\Tests\Support\FixtureDataset;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -23,6 +24,26 @@ final class GenerationRequestTest extends TestCase
             sprintf('%s/%s %s/%s %s', $profile->browser->value, $profile->browserVersion, $profile->platform->value, $profile->device->value, $profile->architecture->value),
             $profile->identity(),
         );
+    }
+
+    #[Test]
+    public function testResultFingerprintTracksTheExactUserAgentAndIsRepeatable(): void
+    {
+        $generator = FixtureDataset::generator();
+        $first = $generator->generate(new GenerationRequest(platform: Platform::Android, seed: 1));
+        $same = FixtureDataset::generator()->generate(new GenerationRequest(platform: Platform::Android, seed: 1));
+        self::assertSame($first->fingerprint(), $same->fingerprint());
+
+        $different = null;
+        for ($seed = 2; $seed < 100; ++$seed) {
+            $candidate = $generator->generate(new GenerationRequest(platform: Platform::Android, seed: $seed));
+            if ($candidate->userAgent !== $first->userAgent) {
+                $different = $candidate;
+                break;
+            }
+        }
+        self::assertNotNull($different);
+        self::assertNotSame($first->fingerprint(), $different->fingerprint());
     }
 
     #[Test]

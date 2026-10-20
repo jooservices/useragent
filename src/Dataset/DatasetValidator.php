@@ -8,9 +8,10 @@ use JOOservices\UserAgent\Domain\Architecture;
 use JOOservices\UserAgent\Domain\BrowserFamily;
 use JOOservices\UserAgent\Domain\DatasetProvenance;
 use JOOservices\UserAgent\Domain\DeviceClass;
-use JOOservices\UserAgent\Domain\Engine;
 use JOOservices\UserAgent\Domain\Platform;
 use JOOservices\UserAgent\Exceptions\InvalidDatasetException;
+use DateTimeImmutable;
+use DateTimeZone;
 
 final class DatasetValidator
 {
@@ -34,6 +35,8 @@ final class DatasetValidator
                 throw new InvalidDatasetException("Manifest field {$key} must be a non-empty string.");
             }
         }
+        $this->date($manifest['fetchedAt'], 'fetchedAt');
+        $effectiveAt = $this->date($manifest['effectiveAt'], 'effectiveAt');
         $compatibility = $this->list($decoded['compatibility.json'] ?? null, 'compatibility');
         if ($compatibility === []) {
             throw new InvalidDatasetException('Compatibility cannot be empty.');
@@ -75,7 +78,8 @@ final class DatasetValidator
             }
             $this->validateTemplate($templates[$key], $platform, $models);
         }
-        $this->validateBrowsers($browsers);
+        /** @var list<array{browser: string, device: string, platform: string, weight: int|float}> $compatibility */
+        (new BrowserConfigValidator())->validate($browsers, $compatibility, $effectiveAt);
         $this->validatePlatforms($platforms);
         $this->validateModels($models);
 
@@ -92,41 +96,11 @@ final class DatasetValidator
         );
 
         /** @var non-empty-list<array{browser: string, device: string, platform: string, weight: int|float}> $compatibility */
-        /** @var array<string, array{engine: string, versions: non-empty-list<array{major: int, full: string, releasedAt: string, weight: int|float}>}> $browsers */
+        /** @var array<string, array{engine: string, versions: non-empty-list<array{major: int, full: string, releasedAt: string, weight: int|float}>, engineOverrides?: array<string, string>}> $browsers */
         /** @var array<string, array<string, array{osVersions: non-empty-list<array{id: string, uaVersion: string, token: string, weight: int|float}>, architectures: non-empty-list<array{id: string, arch: string, token: string, weight: int|float}>, deviceToken?: string}>> $platforms */
         /** @var array<string, non-empty-list<array{id: string, token: string, weight: int|float}>> $models */
 
         return new Dataset($provenance, $compatibility, $browsers, $platforms, $models, $templates);
-    }
-
-    /** @param array<string, mixed> $browsers */
-    private function validateBrowsers(array $browsers): void
-    {
-        foreach ($browsers as $family => $browser) {
-            if (BrowserFamily::tryFrom($family) === null || !is_array($browser)) {
-                throw new InvalidDatasetException('Invalid browser entry.');
-            }
-            /** @var array<string, mixed> $browser */
-            $this->exactKeys($browser, ['engine', 'versions'], "browser {$family}");
-            if (!is_string($browser['engine']) || Engine::tryFrom($browser['engine']) === null) {
-                throw new InvalidDatasetException("Invalid engine for {$family}.");
-            }
-            $versions = $this->list($browser['versions'], "versions for {$family}");
-            if ($versions === []) {
-                throw new InvalidDatasetException("Browser {$family} has no versions.");
-            }
-            foreach ($versions as $version) {
-                if (!is_array($version)) {
-                    throw new InvalidDatasetException('Invalid browser version row.');
-                }
-                /** @var array<string, mixed> $version */
-                $this->exactKeys($version, ['major', 'full', 'releasedAt', 'weight'], 'browser version');
-                if (!is_int($version['major']) || $version['major'] < 1 || !is_string($version['full']) || !is_string($version['releasedAt'])) {
-                    throw new InvalidDatasetException('Invalid browser version values.');
-                }
-                $this->positiveWeight($version['weight']);
-            }
-        }
     }
 
     /** @param array<string, mixed> $platforms */
@@ -302,5 +276,20 @@ final class DatasetValidator
         }
 
         return $value;
+    }
+
+    private function date(string $value, string $label): DateTimeImmutable
+    {
+        $date = DateTimeImmutable::createFromFormat('!Y-m-d', $value, new DateTimeZone('UTC'));
+        $errors = DateTimeImmutable::getLastErrors();
+        if (
+            $date === false
+            || ($errors !== false && ($errors['warning_count'] > 0 || $errors['error_count'] > 0))
+            || $date->format('Y-m-d') !== $value
+        ) {
+            throw new InvalidDatasetException("Dataset date {$label} must use a valid YYYY-MM-DD date.");
+        }
+
+        return $date;
     }
 }

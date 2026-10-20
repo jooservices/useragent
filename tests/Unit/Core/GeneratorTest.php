@@ -4,17 +4,24 @@ declare(strict_types=1);
 
 namespace JOOservices\UserAgent\Tests\Unit\Core;
 
+use JOOservices\UserAgent\Core\BatchGenerator;
+use JOOservices\UserAgent\Core\GenerationSession;
 use JOOservices\UserAgent\Core\Renderer;
 use JOOservices\UserAgent\Domain\Architecture;
 use JOOservices\UserAgent\Domain\BrowserFamily;
 use JOOservices\UserAgent\Domain\DeviceClass;
 use JOOservices\UserAgent\Domain\GenerationRequest;
+use JOOservices\UserAgent\Domain\GenerationResult;
 use JOOservices\UserAgent\Domain\Platform;
 use JOOservices\UserAgent\Domain\SelectionPolicyId;
 use JOOservices\UserAgent\Domain\UniquePolicy;
 use JOOservices\UserAgent\Exceptions\IncompatibleRequestException;
 use JOOservices\UserAgent\Exceptions\InvalidRequestException;
 use JOOservices\UserAgent\Exceptions\UniqueGenerationExhausted;
+use JOOservices\UserAgent\Generator;
+use JOOservices\UserAgent\GeneratorConfig;
+use JOOservices\UserAgent\History\InMemoryHistoryStore;
+use JOOservices\UserAgent\Random\MtRandomSource;
 use JOOservices\UserAgent\Tests\Support\FixtureDataset;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -79,6 +86,26 @@ final class GeneratorTest extends TestCase
     }
 
     #[Test]
+    public function test_GEN_ios_profiles_report_webkit_engine_for_all_browser_families(): void
+    {
+        $generator = Generator::create();
+        foreach ([BrowserFamily::Chrome, BrowserFamily::Firefox, BrowserFamily::Edge] as $browser) {
+            $result = $generator->generate(new GenerationRequest(
+                browser: $browser,
+                platform: Platform::iOS,
+                seed: 42,
+            ));
+            self::assertSame(\JOOservices\UserAgent\Domain\Engine::WebKit, $result->profile->engine);
+        }
+        $safari = $generator->generate(new GenerationRequest(
+            browser: BrowserFamily::Safari,
+            platform: Platform::iOS,
+            seed: 42,
+        ));
+        self::assertSame(\JOOservices\UserAgent\Domain\Engine::WebKit, $safari->profile->engine);
+    }
+
+    #[Test]
     public function test_GEN_H04_recent_filters_old_versions(): void
     {
         $result = FixtureDataset::generator()->generate(new GenerationRequest(
@@ -109,6 +136,51 @@ final class GeneratorTest extends TestCase
         } catch (IncompatibleRequestException $exception) {
             self::assertStringContainsString('safari', $exception->getMessage());
             self::assertStringContainsString('macos', $exception->getMessage());
+        }
+    }
+
+    #[Test]
+    public function test_COMP_U02_version_error_reports_available_versions_without_invalid_alternatives(): void
+    {
+        try {
+            Generator::create()->generate(new GenerationRequest(
+                browser: BrowserFamily::Chrome,
+                device: DeviceClass::Desktop,
+                platform: Platform::Windows,
+                versionExact: 999,
+            ));
+            self::fail('Expected incompatible request.');
+        } catch (IncompatibleRequestException $exception) {
+            self::assertSame(999, $exception->requested['versionExact']);
+            self::assertSame(['chrome' => [139, 145]], $exception->availableVersions);
+            self::assertSame([], $exception->alternatives);
+            self::assertStringContainsString('999', $exception->getMessage());
+        }
+    }
+
+    #[Test]
+    public function test_COMP_U03_alternatives_satisfy_remaining_request_filters(): void
+    {
+        try {
+            Generator::create()->generate(new GenerationRequest(
+                browser: BrowserFamily::Safari,
+                device: DeviceClass::Desktop,
+                platform: Platform::Windows,
+            ));
+            self::fail('Expected incompatible request.');
+        } catch (IncompatibleRequestException $exception) {
+            self::assertNotEmpty($exception->alternatives);
+            foreach ($exception->alternatives as $alternative) {
+                $result = Generator::create()->generate(new GenerationRequest(
+                    browser: BrowserFamily::from($alternative['browser']),
+                    device: DeviceClass::from($alternative['device']),
+                    platform: Platform::from($alternative['platform']),
+                    seed: 1,
+                ));
+                self::assertSame($alternative['browser'], $result->profile->browser->value);
+                self::assertSame($alternative['device'], $result->profile->device->value);
+                self::assertSame($alternative['platform'], $result->profile->platform->value);
+            }
         }
     }
 
@@ -145,6 +217,35 @@ final class GeneratorTest extends TestCase
             self::assertSame(2, $exception->requested);
             self::assertSame(1, $exception->produced);
             self::assertSame(50, $exception->attempts);
+        }
+    }
+
+    #[Test]
+    public function test_BATCH_U02_unique_results_do_not_depend_on_bounded_history_size(): void
+    {
+        $generator = Generator::create(new GeneratorConfig(historySize: 1));
+        $first = $generator->generate(new GenerationRequest(platform: Platform::Windows, seed: 1));
+        $second = $generator->generate(new GenerationRequest(platform: Platform::Android, seed: 1));
+        self::assertNotSame($first->userAgent, $second->userAgent);
+        $generated = 0;
+        try {
+            (new BatchGenerator())->generate(
+                request: new GenerationRequest(),
+                count: 3,
+                unique: UniquePolicy::Fail,
+                attemptBudget: 3,
+                session: new GenerationSession(MtRandomSource::seeded(1), new InMemoryHistoryStore(1), 1),
+                generateOne: static function (GenerationRequest $_request, GenerationSession $_session) use (&$generated, $first, $second): GenerationResult {
+                    return match ($generated++ % 3) {
+                        0, 2 => $first,
+                        default => $second,
+                    };
+                },
+            );
+            self::fail('Expected the repeated third result to be rejected.');
+        } catch (UniqueGenerationExhausted $exception) {
+            self::assertSame(2, $exception->produced);
+            self::assertSame(3, $exception->attempts);
         }
     }
 

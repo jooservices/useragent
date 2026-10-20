@@ -23,13 +23,18 @@ final class BatchGenerator
         Closure $generateOne,
     ): BatchResult {
         $entries = [];
+        /** @var array<string, true> $seen */
+        $seen = [];
         $attempts = 0;
         $produced = 0;
         while ($produced < $count && $attempts < $attemptBudget) {
             ++$attempts;
             $result = $generateOne($request, $session);
-            if ($unique === UniquePolicy::Fail && $session->history->contains($result->userAgent)) {
-                continue;
+            if ($unique === UniquePolicy::Fail) {
+                if (isset($seen[$result->userAgent])) {
+                    continue;
+                }
+                $seen[$result->userAgent] = true;
             }
             $entries[] = $result;
             ++$produced;
